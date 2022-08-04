@@ -1,0 +1,17 @@
+img {
+  /*position: relative;*/
+  /*position: relative;*/
+  z-index: 10;
+}
+
+/* body {
+  background-image: url("../../img/clipboard-image.png");
+} */
+
+.btn-margin-left {
+  margin-left: 4px;
+}
+.btn-margin-right {
+  margin-right: 4px;
+}
+
