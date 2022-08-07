@@ -18,6 +18,9 @@ Other requirements are downloaded during deployment.
 
 # Begin the installation script
 ~$ docker-compose up
+
+# Open a browser and enter
+localhost:3000
 ```
 
 ## Project Structure
