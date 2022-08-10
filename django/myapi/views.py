@@ -1,13 +1,12 @@
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import render
-from .serializers import OrganisationSerializer, UserSerializer, AdminSerializer, TestSerializer, OrganisationProfileSerializer
+from .serializers import OrganisationSerializer, UserSerializer, AdminSerializer, OrganisationProfileSerializer
 from .models import User
 from .models import Administration
 from rest_framework.views import Response, APIView
 from rest_framework import status, generics, viewsets
-from django.shortcuts import render
 from rest_framework import viewsets
-from .serializers import OrganisationSerializer, UserSerializer, AdminSerializer, VolunteerSerializer
+from .serializers import OrganisationSerializer, UserSerializer, AdminSerializer, VolunteerSerializer, TestSerializer
 from .models import Organisation, User, Tester
 from .models import Volunteer
 from .models import Administration
@@ -67,3 +66,66 @@ class TestDetail(APIView):
 class OrgViewSet(viewsets.ModelViewSet):
     queryset = Organisation.objects.all().order_by('Organisation')
     serializer_class = OrganisationSerializer
+
+## HTTP Requests ##
+class UserList(APIView):
+    def get(pk, request):
+        user = User.objects.all()
+        serializer = UserSerializer(user, many=True)
+        return Response(serializer.data)
+
+    def post(pk, request):
+        serializer = UserSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+
+        return Response(serializer.data)
+
+class VolunteerList(APIView):
+    def get(pk, request):
+        volunteer = Volunteer.objects.all()
+        serializer = VolunteerSerializer(volunteer, many=True)
+        return Response(serializer.data)
+
+    def post(pk, request):
+        serializer = VolunteerSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+
+        return Response(serializer.data)
+
+class AdministrationList(APIView):
+    def get(pk, request):
+        organisation = Administration.objects.all()
+        serializer = AdminSerializer(organisation, many=True)
+        return Response(serializer.data)
+
+    def post(pk, request):
+        serializer = AdminSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+
+        return Response(serializer.data)
+
+## GET request is working org, but POST request still getting errors ##
+class OrganisationList(APIView):
+    def get(pk, request):
+        organisation = Organisation.objects.all()
+        serializer = OrganisationProfileSerializer(organisation, many=True)
+        return Response(serializer.data)
+
+    def post(pk, request):
+        serializer = OrganisationProfileSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+
+        return Response(serializer.data)
+
+
+
+
+
+
+

@@ -1,8 +1,9 @@
 from django.forms import ValidationError
 from rest_framework import serializers
-from .models import Organisation, User
+from .models import Organisation, User, Volunteer
 from .models import Administration, Tester
 from rest_framework.serializers import ValidationError
+
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -14,10 +15,15 @@ class AdminSerializer(serializers.HyperlinkedModelSerializer):
         model = Administration
         fields = ('name', 'email', 'role')
 
-class VolunteerSerializer(serializers.HyperlinkedModelSerializer):
+""" class VolunteerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Administration
-        fields = '__all__'
+        fields = '__all__' """
+
+class VolunteerSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Volunteer
+        fields = ('name', 'email', 'number', 'contact', 'specialisation')
 
 class OrganisationProfileSerializer(serializers.ModelSerializer):
     Phishing = serializers.SerializerMethodField()
@@ -63,6 +69,7 @@ class OrganisationSerializer(serializers.ModelSerializer):
                 'Vulnerability_Management': {'write_only': True},
                 'Cyber_Awareness': {'write_only': True},
         }
+
 
     def validate(self, data):
         if data["Organisation"] == data["Contact_Name"]:

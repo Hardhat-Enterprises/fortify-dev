@@ -11,9 +11,14 @@ router.register(r'administration', views.AdminViewSet)
 urlpatterns = [
     # path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path(r'tester/<int:pk>', views.TestDetail.as_view()),
+    path(r'myapi/user/', views.UserList.as_view()),
+    path(r'myapi/volunteer/', views.VolunteerList.as_view()),
+    path(r'myapi/administration/', views.AdministrationList.as_view()),
+    path(r'myapi/organisation/', views.OrganisationList.as_view()),
     path(r'organisation/', views.OrganisationSignUpViewSet.as_view()),
     path(r'organisationprofile/', views.OrganisationProfileViewSet.as_view()),
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
+""" path(r'tester/<int:pk>', views.TestDetail.as_view()), """
+""" path(r'user/', views.UserList.as_view()), """
