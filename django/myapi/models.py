@@ -30,13 +30,15 @@ class Organisation(models.Model):
     Contact_Name = models.CharField(max_length=60)
     Contact_Email = models.CharField(max_length=60)
     Contact_Number = models.CharField(max_length=10)
-    Phishing = models.BooleanField()
-    Vulnerability_Management = models.BooleanField()
-    Cyber_Awareness = models.BooleanField()
+    Phishing = models.BooleanField(default=True, blank=False)
+    Vulnerability_Management = models.BooleanField(default=True, blank=False)
+    Cyber_Awareness = models.BooleanField(default=True, blank=False)
 
     def _str_(self):
         return (self.Organisation + ' ' + self.Contact_Name + ' ' + self.Contact_Email + ' ' 
         + self.Contact_Number + ' ' + self.Phishing + ' ' + self.Vulnerability_Management + ' ' + self.Cyber_Awareness)
+
+    
 
 class Tester(models.Model):
     Country = models.CharField(max_length=60)

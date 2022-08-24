@@ -1,4 +1,4 @@
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import render
 from .serializers import OrganisationSerializer, UserSerializer, AdminSerializer, OrganisationProfileSerializer
 from .models import User
@@ -7,9 +7,10 @@ from rest_framework.views import Response, APIView
 from rest_framework import status, generics, viewsets
 from rest_framework import viewsets
 from .serializers import OrganisationSerializer, UserSerializer, AdminSerializer, VolunteerSerializer, TestSerializer
-from .models import Organisation, User, Tester
 from .models import Volunteer
-from .models import Administration
+from .models import Organisation, Tester
+import json
+
 
 class VolunteerViewSet(viewsets.ModelViewSet):
     queryset = Volunteer.objects.all().order_by('name')
@@ -113,17 +114,14 @@ class AdministrationList(APIView):
 class OrganisationList(APIView):
     def get(pk, request):
         organisation = Organisation.objects.all()
-        serializer = OrganisationProfileSerializer(organisation, many=True)
+        serializer = OrganisationSerializer(organisation, many=True)
         return Response(serializer.data)
 
     def post(pk, request):
-        serializer = OrganisationProfileSerializer(data=request.data)
+        serializer = OrganisationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-
         return Response(serializer.data)
-
-
 
 
 

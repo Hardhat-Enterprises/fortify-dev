@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .models import Organisation, User, Volunteer
 from .models import Administration, Tester
 from rest_framework.serializers import ValidationError
-
+from rest_framework.fields import empty
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -56,7 +56,7 @@ class OrganisationProfileSerializer(serializers.ModelSerializer):
         else:
             return "False"
 
-class OrganisationSerializer(serializers.ModelSerializer):
+""" class OrganisationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Organisation
         fields = ('__all__')
@@ -71,13 +71,29 @@ class OrganisationSerializer(serializers.ModelSerializer):
         }
 
 
+
     def validate(self, data):
         if data["Organisation"] == data["Contact_Name"]:
             raise ValidationError("Organisation & Contact Name must be different")
-        return data
-
+        return data 
+  """
 class TestSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Tester
         fields = ('__all__')
+
+class CustomBooleanField(serializers.BooleanField):
+    def get_value(self, dictionary):
+        return dictionary.get(self.field_name, empty)
+
+class OrganisationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Organisation
+        fields = "__all__"
+        Phishing = CustomBooleanField(required=True)
+        Vulnerability_Management = CustomBooleanField(required=True)
+        Cyber_Awareness = CustomBooleanField(required=True)
+      
+
+
