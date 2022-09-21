@@ -1,16 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
-
-class User(AbstractUser):
-    name = models.CharField(max_length=255)
-    email = models.CharField(max_length=255, unique=True)
-    password = models.CharField(max_length=255)
-    username = None
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
 
 class Volunteer(models.Model):
     name = models.CharField(max_length=60)
@@ -22,6 +12,13 @@ class Volunteer(models.Model):
     def __str__(self):
         return (self.name + ' ' + self.email + ' ' + self.specialisation)
     
+class User(models.Model):
+    name = models.CharField(max_length=60)
+    email = models.CharField(max_length=60)
+
+    def __str__(self):
+        return (self.name + self.email)
+
 class Administration(User):
     role = models.CharField(max_length=30)
 

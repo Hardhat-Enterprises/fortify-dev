@@ -1,20 +1,18 @@
 import React from 'react';
-import {Navbar, Nav, Form, FormControl, Button} from 'react-bootstrap';
-import logo from '../img/logo.png';
+import { Nav, Navbar, Form, FormControl, Button, Container } from 'react-bootstrap'
+import logo from '../img/logo.png'
+import { withKeycloak } from '@react-keycloak/web';
 
-const NavbarComp = (props) => {
-  const logout = async () => {
-      await fetch('http://localhost:8000/api/logout', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-      });
-      props.setName('');
-  }
+// export default class NavbarComp extends Component {
+const NavbarComp = ({ keycloak, keycloakInitialized }) => {
+  // render() {
+  // const { keycloak, initialized } = useKeycloak();
+  return (
+    <div>
+      <>
+        <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
+          <Container>
 
-    return (   
-      <div>
-      <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
             <Navbar.Brand href="/">
               <img
                 alt=""
@@ -25,18 +23,23 @@ const NavbarComp = (props) => {
               />{' '}
               Help Fortify
             </Navbar.Brand>
+
+
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
+
               <Nav
-              className="d-flex align-right"
-              style={{ maxHeight: '100px', flex: 1 }}>
+                className="d-flex"
+                style={{ maxHeight: '100px', flex: 1 }}
+              >
+                {/* <Nav.Link href="/">Home</Nav.Link> */}
+                <Nav.Link href="/organization">Organization</Nav.Link>
+                <Nav.Link href="/volunteer">Volunteer</Nav.Link>
+                <Nav.Link href="/about">About</Nav.Link>
+                <Nav.Link href="/secured">Secured</Nav.Link>
 
-              <Nav.Link href="/">Home</Nav.Link>
-              <Nav.Link href="/organization">Organization</Nav.Link>
-              <Nav.Link href="/volunteer">Volunteer</Nav.Link>
-              <Nav.Link href="/about">About</Nav.Link>
 
-              <Form className="d-flex ms-auto"
+                <Form className="d-flex ms-auto"
                 >
                   <FormControl
                     type="search"
@@ -46,14 +49,21 @@ const NavbarComp = (props) => {
                   />
                   <Button variant="outline-success" className="btn-margin-right"> Search </Button>
                 </Form>
-
-                <Button href="/register" variant="primary" className="btn-margin-left">Register</Button>
-                <Button href="/login" variant="primary" className="btn-margin-left">Login</Button>
-                <Button href="/login" variant="primary" className="btn-margin-left" onClick={logout}>Logout</Button>
+                <Button variant="primary" className="btn-margin-left"> Sign Up </Button>
+                {!keycloak.authenticated &&
+                  <Button type="button" variant="primary" className="btn-margin-left" onClick={() => keycloak.login()}> Login </Button>}
+                {!!keycloak.authenticated &&
+                  <Button type="button" variant="secondary" className="btn-margin-left" onClick={() => keycloak.logout()}> Logout ({keycloak.tokenParsed.preferred_username}) </Button>}
+                  
               </Nav>
-              </Navbar.Collapse>
-      </Navbar>
-      </div>
-      )
-  }
-  export default NavbarComp;
+
+            </Navbar.Collapse>
+
+          </Container>
+        </Navbar>
+      </>
+    </div>
+  )
+}
+
+export default withKeycloak(NavbarComp)

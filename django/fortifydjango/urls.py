@@ -15,9 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework import routers
+from search import views
+
+router = routers.DefaultRouter()
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('myapi.urls')),
     path('', include('myapi.urls')),
+    path('search/', include(router.urls)),
+    # Access these endpoints from eg: http://localhost:8000/search/companies?comp_email=test&comp_name=test
+    path(r'search/companies', views.CompList.as_view()),
+    path(r'search/volunteers', views.HelpList.as_view()),
+    # Access these endpoints from eg: http://localhost:8000/search/companies/1
+    path(r'search/companies/<int:pk>', views.CompDetail.as_view()),
+    path(r'search/volunteers/<int:pk>', views.HelpDetail.as_view()),
 ]
